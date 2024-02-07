@@ -14,7 +14,7 @@ route.post("/checklogin", (req, res) => {
   db.execute("SELECT * FROM user WHERE email = ?", [email])
     .then((result) => {
       if (result[0].length === 0) {
-        res.status(401).send("Invalid email");
+        res.status(404).send("Invalid email");
         return;
       }
 
