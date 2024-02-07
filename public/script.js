@@ -30,4 +30,21 @@ signup.addEventListener("submit", (e) => {
   if (!username || !password || !email) {
     return;
   }
+
+  let user = {
+    username: username,
+    email: email,
+    password: password,
+  };
+
+  axios
+    .post("/user", user)
+    .then((response) => {
+      document.getElementById("signup").reset();
+      document.getElementById("error").innerHTML = "";
+      console.log(response);
+    })
+    .catch((err) => {
+      document.getElementById("error").innerHTML = err;
+    });
 });

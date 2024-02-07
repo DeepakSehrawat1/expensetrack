@@ -1,10 +1,12 @@
 const express = require("express");
+const parser = require("body-parser");
 
 const path = require("path");
+const signroute = require("./routes/signup.js");
 
 const app = express();
 
-const signroute = require("./routes/signup.js");
+app.use(parser.json());
 
 app.use(express.static(path.join(__dirname, "public")));
 
