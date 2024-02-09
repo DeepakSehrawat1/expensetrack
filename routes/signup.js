@@ -11,27 +11,24 @@ route.get("/signup", (req, res) => {
 
 route.post("/user", (req, res) => {
   const { username, email, password } = req.body;
-  bcrypt
-    .hash(password, 10)
-    .then((hash) => {
-      console.log(password);
-      db.execute(`INSERT INTO user(Name,email,password) VALUES(?,?,?)`, [
-        username,
-        email,
-        hash,
-      ])
-        .then((response) => {
-          res.json(response);
-        })
-        .catch((err) => {
-          console.log("in");
-          res.status(500).send(err);
-        });
-    })
-    .catch((err) => {
-      console.log("out");
+  bcrypt.hash(password, 10, (err, hash) => {
+    if (err) {
       res.status(500).send(err);
-    });
+      return;
+    }
+    db.execute(`INSERT INTO user(Name,email,password) VALUES(?,?,?)`, [
+      username,
+      email,
+      hash,
+    ])
+      .then((response) => {
+        res.json(response);
+      })
+      .catch((err) => {
+        console.log("in");
+        res.status(500).send(err);
+      });
+  });
 });
 
 module.exports = route;

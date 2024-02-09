@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form id="form_group">
+      <label for="amount"> expense </label>
+      <input id="amount" type="number" />
+      <label for="job"> choose description </label>
+      <input type="text" id="job" />
+      <label for="category"> choose category </label>
+      <input type="text" id="category" />
+      <button type="submit">ADD EXPENSE</button>
+    </form>
+
+    <ul id="items"></ul>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="expensescript.js"></script>
+  </body>
+</html>

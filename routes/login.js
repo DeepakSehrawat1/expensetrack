@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const db = require("../util/database.js");
+const bcrypt = require("bcrypt");
 
 const route = express.Router();
 
@@ -19,13 +20,25 @@ route.post("/checklogin", (req, res) => {
       }
 
       const user = result[0][0];
-      if (user.password !== password) {
-        res.status(401).send("Invalid  password");
-        return;
-      }
-      res.status(200).json({ message: "Login successful" });
+      console.log(password);
+      console.log(user.password.toString());
+      bcrypt.compare(password, user.password.toString(), (err, kesult2) => {
+        if (err) {
+          console.log("in");
+          res.status(500).send(err);
+          return;
+        }
+        console.log(kesult2);
+        if (kesult2 === true) {
+          res.status(200).json({ message: "Login successful" });
+          return;
+        } else {
+          res.status(401).send("Invalid  password");
+        }
+      });
     })
     .catch((err) => {
+      console.log("out");
       res.status(500).send(err);
     });
 });

@@ -24,7 +24,7 @@ login.addEventListener("submit", (e) => {
       console.log(response);
     })
     .catch((err) => {
-      document.getElementById("error").innerHTML = err.response.data;
-      console.log(err.response.data);
+      document.getElementById("error").innerHTML = err;
+      console.log(err);
     });
 });
