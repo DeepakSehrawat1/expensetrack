@@ -43,6 +43,18 @@ signup.addEventListener("submit", (e) => {
       document.getElementById("signup").reset();
       document.getElementById("error").innerHTML = "";
       console.log(response);
+      axios
+        .get("/login")
+        .then((res) => {
+          document.open();
+          document.write(res.data);
+          document.close();
+
+          window.history.pushState({}, "", "/login");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     })
     .catch((err) => {
       document.getElementById("error").innerHTML = err;

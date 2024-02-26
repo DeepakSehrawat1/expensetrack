@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const db = require("../util/database.js");
 const bcrypt = require("bcrypt");
+const user = require("../model/user.js");
 
 const route = express.Router();
 
@@ -16,7 +17,7 @@ route.post("/user", (req, res) => {
       res.status(500).send(err);
       return;
     }
-    db.execute(`INSERT INTO user(Name,email,password) VALUES(?,?,?)`, [
+    /*db.execute(`INSERT INTO user(Name,email,password) VALUES(?,?,?)`, [
       username,
       email,
       hash,
@@ -27,6 +28,22 @@ route.post("/user", (req, res) => {
       .catch((err) => {
         console.log("in");
         res.status(500).send(err);
+      });*/
+
+    user
+      .create({
+        Name: username,
+        email: email,
+        password: hash,
+      })
+      .then((responce) => {
+        res.json(responce);
+        console.log("entered");
+      })
+      .catch((err) => {
+        console.log("in");
+        res.status(500).send(err);
+        console.log(err);
       });
   });
 });

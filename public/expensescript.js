@@ -10,7 +10,7 @@ function showele(obj) {
 
   //attaching to li
   newitem.appendChild(document.createTextNode(`${obj.amount}`));
-  newitem.appendChild(document.createTextNode(`${obj.job}`));
+  newitem.appendChild(document.createTextNode(`${obj.type}`));
   newitem.appendChild(document.createTextNode(`${obj.category}`));
 
   //creating del btn
@@ -65,16 +65,16 @@ function addelement(e) {
   var item1 = document.getElementById("amount").value;
   var item2 = document.getElementById("job").value;
   var item3 = document.getElementById("category").value;
-  let id = Math.random();
+  let id = Math.floor(Math.random() * 1000);
   let myobj = {
     id: id,
-    expense: item1,
+    amount: item1,
     type: item2,
     category: item3,
   };
-
+  const token = localStorage.getItem("token");
   axios
-    .post("/add-element", myobj)
+    .post("/add-element", myobj, { headers: { Authorization: token } })
     .then((res) => showele(myobj))
     .catch((err) => console.log(err));
 
@@ -108,8 +108,9 @@ function addelement(e) {
 }*/
 
 window.addEventListener("DOMContentLoaded", function () {
+  const token = this.localStorage.getItem("token");
   axios
-    .get("/get-element")
+    .get("/get-element", { headers: { Authorization: token } })
     .then((res) => {
       console.log(res.data);
       for (var i = 0; i < res.data.length; i++) {

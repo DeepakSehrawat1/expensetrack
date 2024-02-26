@@ -20,6 +20,19 @@ login.addEventListener("submit", (e) => {
       document.getElementById("login").reset();
       if (response.status === 200) {
         alert("login successful");
+        localStorage.setItem("token", response.data.token);
+        axios
+          .get("/expense")
+          .then((res) => {
+            document.open();
+            document.write(res.data);
+            document.close();
+
+            window.history.pushState({}, "", "/expense");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
       console.log(response);
     })
