@@ -41,3 +41,18 @@ login.addEventListener("submit", (e) => {
       console.log(err);
     });
 });
+
+function forgotpassword() {
+  document.getElementById("forgotpass").onclick = (e) => {
+    e.preventDefault();
+    document.getElementById("forgopass").style.display = "block";
+  };
+
+  document.getElementById("forgopass").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    let obj = {
+      email: document.getElementById("inpumail").value,
+    };
+    await axios.post("/password/forgotpassword", obj);
+  });
+}

@@ -16,7 +16,16 @@
       <button type="submit">ADD EXPENSE</button>
     </form>
 
+    <div id="message">
+      <p id="showpremiumity" style="display: none">premium user</p>
+      <button style="display: none" id="premium">buy premium</button>
+    </div>
+
     <ul id="items"></ul>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <ul id="leaderboard"></ul>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="expensescript.js"></script>
   </body>
