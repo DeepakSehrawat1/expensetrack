@@ -1,4 +1,5 @@
 var form = document.getElementById("form_group");
+const pagination = document.getElementById("pagination");
 
 form.addEventListener("submit", addelement);
 
@@ -19,12 +20,6 @@ function showele(obj) {
   delbtn.appendChild(document.createTextNode("delete"));
   newitem.appendChild(delbtn);
 
-  //creating edit btn
-  /* var editbtn = document.createElement("button");
-  editbtn.id = "edit";
-  editbtn.appendChild(document.createTextNode("edit"));
-  newitem.appendChild(editbtn);*/
-
   items.appendChild(newitem);
 
   delbtn.addEventListener("click", function (e) {
@@ -38,27 +33,6 @@ function showele(obj) {
       })
       .catch((err) => console.log(err));
   });
-
-  /*editbtn.addEventListener("click", function (e) {
-    e.preventDefault();
-    axios
-      .delete(
-        "https://crudcrud.com/api/59675cf01959452299e9ef3b0620e3ee/appointment/" +
-          obj._id
-      )
-      .then((res) => {
-        var li = e.target.parentElement.childNodes;
-        console.log(li[0].data);
-
-        document.getElementById("amount").value = li[0].data;
-        document.getElementById("job").value = li[1].data;
-        document.getElementById("category").value = li[2].data;
-
-        var le = e.target.parentElement;
-        items.removeChild(le);
-      })
-      .catch((err) => console.log(err));
-  });*/
 }
 
 function addelement(e) {
@@ -83,44 +57,8 @@ function addelement(e) {
   document.getElementById("form_group").reset();
 }
 
-/*function removebtn(e) {
-  e.preventDefault();
-  if (e.target.id === "delete") {
-    var li = e.target.parentElement;
-
-    console.log(li._id);
-    /* axios
-      .delete(
-        "https://crudcrud.com/api/e5344f4ad3f2408abcb0532b71d233a9/appointment" +
-          li
-      )
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  } else if (e.target.id === "edit") {
-    var li = e.target.parentElement.childNodes;
-    console.log(li[0].data);
-
-    document.getElementById("amount").value = li[0].data;
-    document.getElementById("job").value = li[1].data;
-    document.getElementById("category").value = li[2].data;
-
-    var le = e.target.parentElement;
-    itemlist.removeChild(le);
-  }
-}*/
-
 window.addEventListener("DOMContentLoaded", function () {
-  const token = this.localStorage.getItem("token");
-  axios
-    .get("/get-element", { headers: { Authorization: token } })
-    .then((res) => {
-      console.log(res.data);
-      for (var i = 0; i < res.data.length; i++) {
-        console.log(typeof res.data[i]);
-        showele(res.data[i]);
-      }
-    })
-    .catch((ele) => console.log("error"));
+  getElement(1);
 });
 
 document.getElementById("premium").onclick = async function (e) {
@@ -144,6 +82,7 @@ document.getElementById("premium").onclick = async function (e) {
       );
       document.getElementById("premium").style.visibility = "hidden";
       document.getElementById("showpremiumity").style.display = "block";
+      document.getElementById("savexpense").style.display = "block";
       showleaderboard();
       alert("you are premium user now");
     },
@@ -168,6 +107,7 @@ function buypremiumvisible() {
       if (data.message == "true") {
         document.getElementById("premium").style.visibility = "hidden";
         document.getElementById("showpremiumity").style.display = "block";
+        document.getElementById("savexpense").style.display = "block";
         showleaderboard();
       } else {
         document.getElementById("premium").style.display = "block";
@@ -210,4 +150,73 @@ function showleaderboard() {
   };
 
   document.getElementById("message").appendChild(inputElement);
+}
+function download() {
+  document.getElementById("savexpense").onclick = async function (e) {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get("expense/download", {
+        headers: { Authorization: token },
+      });
+
+      if (response.status === 200) {
+        // The backend is essentially sending a download link
+        // which, if we open in the browser, the file would download
+        const a = document.createElement("a");
+        a.href = response.data.fileURL;
+        a.download = "myexpense.csv";
+        a.click();
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+}
+
+function showPages({
+  currentPage,
+  hasNext,
+  nextPge,
+  hasPrev,
+  previousPage,
+  lastPage,
+}) {
+  pagination.innerHTML = "";
+  if (hasPrev) {
+    const btnp = document.createElement("button");
+    btnp.innerHTML = previousPage;
+    btnp.addEventListener("click", () => getElement(previousPage));
+    pagination.appendChild(btnp);
+  }
+
+  const btnc = document.createElement("button");
+  btnc.innerHTML = `<h3>${currentPage}</h3>`;
+  btnc.addEventListener("click", () => getElement(currentPage));
+  pagination.appendChild(btnc);
+
+  if (hasNext) {
+    const btnn = document.createElement("button");
+    btnn.innerHTML = `<h3>${nextPge}</h3>`;
+    btnn.addEventListener("click", () => getElement(nextPge));
+    pagination.appendChild(btnn);
+  }
+}
+
+function getElement(page) {
+  document.getElementById("items").innerHTML = "";
+  const token = this.localStorage.getItem("token");
+  axios
+    .get(`/get-element/?page=${page}`, { headers: { Authorization: token } })
+    .then((res) => {
+      console.log(res.data);
+      for (var i = 0; i < res.data.results.length; i++) {
+        console.log(typeof res.data.results[i]);
+        showele(res.data.results[i]);
+      }
+      showPages(res.data);
+    })
+    .catch((ele) => console.log("error"));
 }

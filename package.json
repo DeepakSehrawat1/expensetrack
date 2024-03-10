@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1573.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.5",
@@ -17,9 +18,11 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.9.1",
     "razorpay": "^2.9.2",
-    "sequelize": "^6.37.1"
+    "sequelize": "^6.37.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.3",
+    "sib-api-v3-sdk": "^8.5.0"
   }
 }

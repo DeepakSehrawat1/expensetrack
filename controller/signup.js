@@ -14,7 +14,6 @@ exports.signuping = (req, res) => {
       return;
     }
 
-    console.log(req.user);
     /*db.execute(`INSERT INTO user(Name,email,password) VALUES(?,?,?)`, [
         username,
         email,

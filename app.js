@@ -6,11 +6,13 @@ const signroute = require("./routes/signup.js");
 const loginroute = require("./routes/login.js");
 const expenseroute = require("./routes/expense.js");
 const premiumroute = require("./routes/premium.js");
+const forgotPasswordroute = require("./routes/forgotPassword.js");
 const premiumfeature = require("./routes/premiumfeature.js");
 const sequelize = require("./util/database.js");
 const User = require("./model/user.js");
 const Expense = require("./model/expense.js");
 const Order = require("./model/order.js");
+const forgotPassword = require("./model/forgotPassword");
 
 const app = express();
 
@@ -19,6 +21,7 @@ app.use(parser.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(premiumroute);
+app.use("/password", forgotPasswordroute);
 
 app.use(premiumfeature);
 app.use(loginroute);
@@ -32,6 +35,9 @@ Expense.belongsTo(User);
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+User.hasMany(forgotPassword);
+forgotPassword.belongsTo(User);
 
 sequelize
   .sync()

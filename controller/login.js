@@ -3,6 +3,8 @@ const path = require("path");
 const bcrypt = require("bcrypt");
 const User = require("../model/user.js");
 const jwt = require("jsonwebtoken");
+const Sib = require("sib-api-v3-sdk");
+require("dotenv").config();
 
 function generateToken(id) {
   return jwt.sign({ userId: id }, "1234yughj56sjkkhscjOIHCUGB83T29R8Y");

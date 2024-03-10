@@ -45,14 +45,21 @@ login.addEventListener("submit", (e) => {
 function forgotpassword() {
   document.getElementById("forgotpass").onclick = (e) => {
     e.preventDefault();
+    console.log("hello");
     document.getElementById("forgopass").style.display = "block";
   };
 
   document.getElementById("forgopass").addEventListener("submit", async (e) => {
     e.preventDefault();
-    let obj = {
-      email: document.getElementById("inpumail").value,
-    };
-    await axios.post("/password/forgotpassword", obj);
+    try {
+      let obj = {
+        email: document.getElementById("inpumail").value,
+      };
+
+      await axios.post("/password/forgotpassword", obj);
+    } catch (err) {
+      console.log(err);
+    }
   });
 }
+forgotpassword();

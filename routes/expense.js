@@ -31,4 +31,10 @@ route.delete(
   expensecontroller.deletelements
 );
 
+route.get(
+  "/expense/download",
+  authorisationuser.authenticate,
+  expensecontroller.downloadexpense
+);
+
 module.exports = route;
